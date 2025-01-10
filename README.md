@@ -1,143 +1,149 @@
-# User Authentication and Management Backend
+# Ride-Hailing Backend API
 
-This project is a robust backend system for user and captain authentication and management, built with Node.js and Express.js.
+This project is a backend API for a ride-hailing application, providing user and captain management functionalities.
 
-The backend provides a secure and scalable solution for user and captain registration, login, profile management, and logout functionality. It utilizes JSON Web Tokens (JWT) for authentication, bcrypt for password hashing, and MongoDB for data storage. The system is designed with security in mind, implementing features such as token blacklisting and middleware-based authentication checks.
+## Project Description
+
+This backend API serves as the core of a ride-hailing platform, facilitating user and captain interactions. It provides robust authentication, profile management, and vehicle tracking capabilities. The API is built using Node.js and Express.js, with MongoDB as the database, ensuring scalability and performance.
 
 Key features include:
-- User and captain registration with email and password
-- Secure login with JWT token generation
-- User and captain profile retrieval
-- Logout functionality with token blacklisting
-- Middleware for route protection
+- User and captain registration and authentication
+- Profile management for users and captains
+- Vehicle information management for captains
+- Token-based authentication with JWT
+- Secure password hashing using bcrypt
 - MongoDB integration for data persistence
-- Password hashing for enhanced security
-- Cross-Origin Resource Sharing (CORS) support
+- Express.js middleware for request handling and routing
 
-This backend is ideal for applications requiring a solid foundation for user and captain management and authentication, providing a RESTful API that can be easily integrated with various frontend technologies.
+The API is designed with security in mind, implementing features such as token blacklisting for logout functionality and secure cookie handling for token storage.
 
 ## Repository Structure
 
 ```
-Backend/
-├── app.js                 # Main application setup
-├── server.js              # Server entry point
-├── controllers/
-│   ├── user.controller.js # User-related controller logic
-│   └── captain.controller.js # Captain-related controller logic
-├── db/
-│   └── db.js              # Database connection setup
-├── middlewares/
-│   └── auth.middleware.js # Authentication middleware
-├── models/
-│   ├── blacklistToken.model.js # Blacklisted token model
-│   ├── user.Model.js      # User model
-│   └── captain.model.js   # Captain model
-├── routes/
-│   ├── user.routes.js     # User-related route definitions
-│   └── captain.routes.js  # Captain-related route definitions
-├── services/
-│   ├── user.service.js    # User-related business logic
-│   └── captain.service.js # Captain-related business logic
-└── package.json           # Project dependencies and scripts
+.
+├── Backend
+│   ├── app.js
+│   ├── controllers
+│   │   ├── captain.controller.js
+│   │   └── user.controller.js
+│   ├── db
+│   │   └── db.js
+│   ├── middlewares
+│   │   └── auth.middleware.js
+│   ├── models
+│   │   ├── blacklistToken.model.js
+│   │   ├── captain.model.js
+│   │   └── user.Model.js
+│   ├── package.json
+│   ├── routes
+│   │   ├── captain.routes.js
+│   │   └── user.routes.js
+│   ├── server.js
+│   └── services
+│       ├── captain.service.js
+│       └── user.service.js
+└── README.md
 ```
+
+Key Files:
+- `server.js`: Entry point of the application
+- `app.js`: Express application setup and middleware configuration
+- `db/db.js`: Database connection setup
+- `controllers/`: Contains logic for handling requests
+- `models/`: Defines database schemas and models
+- `routes/`: Defines API routes
+- `middlewares/`: Custom middleware functions
+- `services/`: Business logic and data processing
 
 ## Usage Instructions
 
-[Usage instructions remain unchanged]
+### Installation
 
-## API Endpoints
+Prerequisites:
+- Node.js (v14 or later)
+- MongoDB (v4.4 or later)
 
-### User Endpoints
+Steps:
+1. Clone the repository
+2. Navigate to the Backend directory: `cd Backend`
+3. Install dependencies: `npm install`
+4. Create a `.env` file in the Backend directory with the following variables:
+   ```
+   PORT=3000
+   DB_CONNECT=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   NODE_ENV=development
+   ```
+5. Start the server: `npm start`
 
-- POST `/users/register`: Register a new user
-- POST `/users/login`: Login a user
-- GET `/users/profile`: Get user profile (requires authentication)
-- GET `/users/logout`: Logout user (requires authentication)
+### API Endpoints
 
-### Captain Endpoints
+1. User Routes:
+   - POST `/users/register`: Register a new user
+   - POST `/users/login`: Login a user
+   - GET `/users/profile`: Get user profile (requires authentication)
+   - GET `/users/logout`: Logout user (requires authentication)
 
-- POST `/captains/register`: Register a new captain
-- POST `/captains/login`: Login a captain
-- GET `/captains/profile`: Get captain profile (requires authentication)
-- GET `/captains/logout`: Logout captain (requires authentication)
+2. Captain Routes:
+   - POST `/captains/register`: Register a new captain
+   - POST `/captains/login`: Login a captain
+   - GET `/captains/profile`: Get captain profile (requires authentication)
+   - GET `/captains/logout`: Logout captain (requires authentication)
 
-## Authentication
+### Authentication
 
-The API uses JWT for authentication. After successful login, include the token in the `Authorization` header of subsequent requests:
+The API uses JWT for authentication. Include the token in the `Authorization` header as a Bearer token for authenticated requests.
 
+### Error Handling
+
+The API returns appropriate HTTP status codes and error messages for different scenarios. Always check the response status and body for error information.
+
+### Testing & Quality
+
+To run tests (assuming tests are set up):
 ```
-Authorization: Bearer <your_token_here>
+npm test
 ```
 
-Both users and captains have separate authentication middlewares to protect their respective routes.
+### Troubleshooting
 
-## Data Models
+Common issues:
+1. Connection errors:
+   - Ensure MongoDB is running and the connection string in `.env` is correct
+   - Check for network issues or firewall settings
 
-### User Model
-[User model details remain unchanged]
+2. Authentication failures:
+   - Verify the JWT_SECRET in the .env file
+   - Ensure the token is not expired or blacklisted
 
-### Captain Model
-The Captain model includes the following fields:
-- `name`: Object with `firstname` and `lastname`
-- `email`: Unique email address
-- `password`: Hashed password
-- `vehicle`: Object with `color`, `plate`, `capacity`, and `vehicleType`
-- `status`: Captain's status (active/inactive)
-- `socketId`: Optional socket ID
+3. Request validation errors:
+   - Check the request payload against the expected schema in the routes
 
-## Error Handling
-
-[Error handling section remains unchanged]
-
-## Testing & Quality
-
-[Testing & Quality section remains unchanged]
-
-## Troubleshooting
-
-[Troubleshooting section remains unchanged]
+For debugging:
+- Set `NODE_ENV=development` in the `.env` file for verbose logging
+- Check the console output for error messages and stack traces
 
 ## Data Flow
 
-The request data flow in this application follows these steps:
-
-1. Client sends a request to an endpoint (e.g., `/users/login` or `/captains/login`)
-2. The request is first processed by Express middleware (CORS, JSON parsing, etc.)
-3. It then reaches the appropriate route handler in `user.routes.js` or `captain.routes.js`
-4. The route handler may apply input validation using `express-validator`
-5. The request is then passed to the corresponding controller function in `user.controller.js` or `captain.controller.js`
-6. The controller interacts with the `user.Model.js` or `captain.model.js` to perform database operations
-7. If authentication is required, `auth.middleware.js` verifies the JWT token for users or captains
-8. The response is sent back to the client
+1. Client sends a request to the server
+2. The request is processed by Express middleware (CORS, body parsing, etc.)
+3. The appropriate route handler is invoked based on the URL and HTTP method
+4. The route handler may use authentication middleware to verify the user's token
+5. The controller associated with the route processes the request
+6. If needed, the controller interacts with the database through Mongoose models
+7. The response is sent back to the client
 
 ```
-Client Request
-     |
-     v
-Express Middleware
-     |
-     v
-Route Handler (user.routes.js or captain.routes.js)
-     |
-     v
-Input Validation
-     |
-     v
-Controller (user.controller.js or captain.controller.js)
-     |
-     v
-Model (user.Model.js or captain.model.js)
-     |
-     v
-Database Operation
-     |
-     v
-Response to Client
+Client -> Express Middleware -> Route Handler -> Controller -> Model -> Database
+       <-                    <-               <-           <-       <-
 ```
 
-Note: Authentication middleware may be applied at the route level, checking the JWT token before allowing access to protected routes.
+## Infrastructure
 
-## Contributing
+The application uses the following key resources:
 
-[Contributing section remains unchanged]
+- Express.js server running on Node.js
+- MongoDB database for data storage
+- JSON Web Tokens (JWT) for authentication
+- bcrypt for password hashing
+- Mongoose as an ODM for MongoDB
