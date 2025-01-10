@@ -1,17 +1,20 @@
-# Express.js Backend for User Registration and Authentication
+# User Authentication and Management Backend
 
-This project is a backend application built with Express.js that provides user registration and authentication functionality. It uses MongoDB for data storage and includes features such as password hashing, JWT token generation, and input validation.
+This project is a robust backend system for user authentication and management, built with Node.js and Express.js.
 
-The backend serves as a foundation for applications requiring user management and secure authentication. It offers a RESTful API for user registration, with built-in security measures to protect user data. The application is designed with a modular structure, making it easy to extend and maintain.
+The backend provides a secure and scalable solution for user registration, login, profile management, and logout functionality. It utilizes JSON Web Tokens (JWT) for authentication, bcrypt for password hashing, and MongoDB for data storage. The system is designed with security in mind, implementing features such as token blacklisting and middleware-based authentication checks.
 
 Key features include:
 - User registration with email and password
-- Password hashing using bcrypt
-- JWT token generation for authentication
-- Input validation using express-validator
-- MongoDB integration using Mongoose
-- CORS support for cross-origin requests
-- Error handling middleware
+- Secure login with JWT token generation
+- User profile retrieval
+- Logout functionality with token blacklisting
+- Middleware for route protection
+- MongoDB integration for data persistence
+- Password hashing for enhanced security
+- Cross-Origin Resource Sharing (CORS) support
+
+This backend is ideal for applications requiring a solid foundation for user management and authentication, providing a RESTful API that can be easily integrated with various frontend technologies.
 
 ## Repository Structure
 
@@ -20,11 +23,14 @@ Backend/
 ├── app.js                 # Main application setup
 ├── server.js              # Server entry point
 ├── controllers/
-│   └── user.controller.js # User-related request handlers
+│   └── user.controller.js # User-related controller logic
 ├── db/
 │   └── db.js              # Database connection setup
+├── middlewares/
+│   └── auth.middleware.js # Authentication middleware
 ├── models/
-│   └── user.Model.js      # User data model
+│   ├── blacklistToken.model.js # Blacklisted token model
+│   └── user.Model.js      # User model
 ├── routes/
 │   └── user.routes.js     # User-related route definitions
 ├── services/
@@ -36,17 +42,22 @@ Backend/
 
 ### Installation
 
-1. Ensure you have Node.js (v14 or later) and npm installed.
-2. Clone the repository and navigate to the project directory.
+Prerequisites:
+- Node.js (v14 or later)
+- MongoDB (v4.4 or later)
+
+Steps:
+1. Clone the repository
+2. Navigate to the Backend directory
 3. Install dependencies:
    ```
    npm install
    ```
-4. Create a `.env` file in the root directory with the following variables:
+4. Create a `.env` file in the Backend directory with the following variables:
    ```
    PORT=3000
    DB_CONNECT=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret_key
+   JWT_SECRET=your_jwt_secret
    ```
 
 ### Getting Started
@@ -55,42 +66,49 @@ Backend/
    ```
    npm start
    ```
-2. The server will be running on `http://localhost:3000` (or the port specified in your `.env` file).
+2. The server will be running on `http://localhost:3000` (or the port specified in your .env file)
 
 ### API Endpoints
 
-- `POST /users/register`: Register a new user
-  - Request body:
-    ```json
-    {
-      "name": {
-        "firstname": "John",
-        "lastname": "Doe"
-      },
-      "email": "john.doe@example.com",
-      "password": "securepassword"
-    }
-    ```
-  - Response:
-    ```json
-    {
-      "token": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-      "user": {
-        "_id": "XXXXXXXXXXXXXXXXXXXXXXXX",
-        "name": {
-          "firstname": "John",
-          "lastname": "Doe"
-        },
-        "email": "john.doe@example.com"
-      }
-    }
-    ```
+- POST `/users/register`: Register a new user
+  ```json
+  {
+    "name": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "password": "securepassword"
+  }
+  ```
 
-### Configuration
+- POST `/users/login`: Login a user
+  ```json
+  {
+    "email": "john.doe@example.com",
+    "password": "securepassword"
+  }
+  ```
 
-- `PORT`: The port on which the server will run (default: 3000)
-- `DB_CONNECT`: MongoDB connection string
-- `JWT_SECRET`: Secret key for JWT token generation
+- GET `/users/profile`: Get user profile (requires authentication)
+
+- GET `/users/logout`: Logout user (requires authentication)
+
+### Authentication
+
+The API uses JWT for authentication. After successful login, include the token in the `Authorization` header of subsequent requests:
+
+```
+Authorization: Bearer <your_token_here>
+```
+
+### Error Handling
+
+The API returns appropriate HTTP status codes and error messages:
+
+- 400: Bad Request (e.g., invalid input)
+- 401: Unauthorized (authentication failed)
+- 500: Internal Server Error
 
 ### Testing & Quality
 
@@ -101,51 +119,70 @@ npm test
 
 ### Troubleshooting
 
-1. Connection Issues:
-   - Problem: Unable to connect to the database
-   - Error message: "Error connecting to DB: ..."
+Common issues:
+
+1. Connection to MongoDB fails
+   - Error: "MongoNetworkError: failed to connect to server"
    - Solution: 
      1. Check if MongoDB is running
-     2. Verify the `DB_CONNECT` string in your `.env` file
-     3. Ensure network connectivity to the database server
+     2. Verify the connection string in the `.env` file
+     3. Ensure network connectivity to the MongoDB server
 
-2. Registration Failures:
-   - Problem: User registration fails
-   - Error message: "Invalid JSON format" or validation errors
+2. JWT verification fails
+   - Error: "JsonWebTokenError: invalid signature"
    - Solution:
-     1. Check the request body format
-     2. Ensure all required fields are provided
-     3. Verify that the email is unique and not already registered
+     1. Check if the `JWT_SECRET` in the `.env` file matches the one used to sign the token
+     2. Ensure the token hasn't expired
+     3. Verify the token format in the Authorization header
 
-### Debugging
+3. CORS issues
+   - Error: "Access to XMLHttpRequest has been blocked by CORS policy"
+   - Solution:
+     1. Check the CORS configuration in `app.js`
+     2. Ensure the client's origin is allowed
+     3. Verify that the `cors` middleware is properly configured
 
-To enable debug mode, set the `DEBUG` environment variable:
-```
-DEBUG=app:* npm start
-```
-
-Log files are typically located in the project root directory or a `logs/` subdirectory.
+For debugging:
+- Set `NODE_ENV=development` in your `.env` file for more verbose logging
+- Check the console output for error messages and stack traces
+- Use a tool like Postman to test API endpoints and examine responses
 
 ## Data Flow
 
 The request data flow in this application follows these steps:
 
-1. Client sends a POST request to `/users/register` with user data
-2. The request is received by the Express server (app.js)
-3. CORS middleware processes the request
-4. JSON parsing middleware processes the request body
-5. The request is routed to the user registration endpoint (user.routes.js)
-6. Input validation middleware checks the request data (user.routes.js)
-7. The user controller handles the registration logic (user.controller.js)
-8. The user service creates the user in the database (user.service.js)
-9. The user model hashes the password and generates a JWT token (user.Model.js)
-10. The response with the token and user data is sent back to the client
+1. Client sends a request to an endpoint (e.g., `/users/login`)
+2. The request is first processed by Express middleware (CORS, JSON parsing, etc.)
+3. It then reaches the appropriate route handler in `user.routes.js`
+4. The route handler may apply input validation using `express-validator`
+5. The request is then passed to the corresponding controller function in `user.controller.js`
+6. The controller interacts with the `user.Model.js` to perform database operations
+7. If authentication is required, `auth.middleware.js` verifies the JWT token
+8. The response is sent back to the client
 
 ```
-Client -> Server -> CORS -> JSON Parser -> Router -> Validator -> Controller -> Service -> Model -> Database
-   ^                                                                                                   |
-   |                                                                                                   |
-   +--------------------------------------------------------------------------------------------------+
+Client Request
+     |
+     v
+Express Middleware
+     |
+     v
+Route Handler (user.routes.js)
+     |
+     v
+Input Validation
+     |
+     v
+Controller (user.controller.js)
+     |
+     v
+Model (user.Model.js)
+     |
+     v
+Database Operation
+     |
+     v
+Response to Client
 ```
 
-Note: Ensure proper error handling at each step of the flow to provide meaningful feedback to the client.
+Note: Authentication middleware may be applied at the route level, checking the JWT token before allowing access to protected routes.
