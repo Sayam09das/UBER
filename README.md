@@ -186,3 +186,45 @@ Response to Client
 ```
 
 Note: Authentication middleware may be applied at the route level, checking the JWT token before allowing access to protected routes.
+
+## Contributing
+
+We welcome contributions to improve the User Authentication and Management Backend! Here's how you can contribute:
+
+### Reporting Issues
+
+If you encounter any bugs or have suggestions for improvements:
+
+1. Check the [GitHub Issues](https://github.com/your-repo-url/issues) to see if the issue has already been reported.
+2. If not, open a new issue, providing a clear description of the problem or suggestion, along with any relevant code snippets or error messages.
+
+### Suggesting Enhancements
+
+We're always looking for ways to make the backend better:
+
+1. Open a new issue on GitHub.
+2. Clearly describe your enhancement idea, explaining why it would be useful and how it should work.
+
+### Submitting Pull Requests
+
+If you'd like to contribute code:
+
+1. Fork the repository and create a new branch for your feature or bug fix.
+2. Write your code, following the existing code style and structure.
+3. Add or update tests as necessary.
+4. Update the documentation to reflect your changes.
+5. Submit a pull request with a clear description of your changes.
+
+### Coding Standards
+
+When contributing, please adhere to the following guidelines:
+
+- Follow the existing code style and naming conventions.
+- Write clear, commented code.
+- Ensure your code passes all existing tests.
+- Add new tests for new functionality.
+- Update the README or other documentation as needed.
+
+By contributing, you agree that your contributions will be licensed under the project's existing license.
+
+Thank you for helping improve the User Authentication and Management Backend!

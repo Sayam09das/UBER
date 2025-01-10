@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const captainSchema = new mongoose.Schema({
     name: {
         firstname: {
@@ -75,18 +76,20 @@ const captainSchema = new mongoose.Schema({
     }
 });
 
-captainSchema.method.generateAuthToken = function(){
+// Corrected: Use `captainSchema.methods` instead of `captainSchema.method`
+captainSchema.methods.generateAuthToken = function(){
     const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
     return token;
 }
 
-captainSchema.method.comparePassword = async function(password){
+captainSchema.methods.comparePassword = async function(password){
     return await bcrypt.compare(password, this.password);
 }
 
-captainSchema.static.hashPassword = async function(password){
+// Corrected: Use `captainSchema.statics` instead of `captainSchema.statics`
+captainSchema.statics.hashPassword = async function(password) {
     return await bcrypt.hash(password, 10);
-}
+};
 
 const captainModel = mongoose.model('captain', captainSchema);
 
