@@ -1,8 +1,9 @@
-const userModel = require('../models/user.Model');
+const userModel = require('../models/user.Model'); 
 const userServices = require('../services/user.service');
 const { validationResult } = require('express-validator');
-const blacklistTokenModel = require('../models/blacklistToken.model'); // Correct import
+const blacklistTokenModel = require('../models/blacklistToken.model');
 
+// ✅ Register User
 module.exports.register = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -11,12 +12,6 @@ module.exports.register = async (req, res) => {
 
     const { email, password, name } = req.body;
 
-    const isUserAlready = await userModel.findOne({ email });
-
-    if(isUserAlready){
-        return res.status(400).json({ message: 'User already exists' });
-    }
-    
     try {
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
@@ -35,6 +30,7 @@ module.exports.register = async (req, res) => {
     }
 };
 
+// ✅ Login User
 module.exports.loginUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -58,9 +54,9 @@ module.exports.loginUser = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000,
+            maxAge: 24 * 60 * 60 * 1000,  // 1 day
         });
-        
+
         res.status(200).json({ token, user });
     } catch (error) {
         console.error('Error in loginUser:', error);
@@ -68,16 +64,27 @@ module.exports.loginUser = async (req, res) => {
     }
 };
 
-module.exports.getUserProfile = async (req, res, next) => {
-    res.status(200).json({ user: req.user });
-}
-
-module.exports.logoutUser = async (req, res, next) => {
-    res.clearCookie('token');
+module.exports.getUserProfile = async (req, res) => {
+    try {
+        const user = req.user;
+        res.status(200).json({ message: 'User profile fetched successfully', user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+};
+// ✅ Logout User
+module.exports.logoutUser = async (req, res) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
+    if (!token) {
+        return res.status(400).json({ message: 'No token found for logout' });
+    }
+
+    res.clearCookie('token');
+
     try {
-        await blacklistTokenModel.create({ token }); // Corrected model name
+        await blacklistTokenModel.create({ token });
         res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
         console.error('Error in logoutUser:', error);
