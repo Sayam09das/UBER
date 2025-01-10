@@ -77,20 +77,21 @@ const captainSchema = new mongoose.Schema({
 });
 
 // Corrected: Use `captainSchema.methods` instead of `captainSchema.method`
-captainSchema.methods.generateAuthToken = function(){
-    const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
+captainSchema.methods.generateAuthToken = function() {
+    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     return token;
-}
+};
 
-captainSchema.methods.comparePassword = async function(password){
+captainSchema.methods.comparePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
-}
+};
 
 // Corrected: Use `captainSchema.statics` instead of `captainSchema.statics`
 captainSchema.statics.hashPassword = async function(password) {
     return await bcrypt.hash(password, 10);
 };
 
-const captainModel = mongoose.model('captain', captainSchema);
+// Ensure the model is not defined multiple times
+const captainModel = mongoose.models.Captain || mongoose.model('Captain', captainSchema);
 
 module.exports = captainModel;
