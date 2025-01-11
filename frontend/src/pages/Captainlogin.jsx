@@ -54,15 +54,6 @@ const CaptainLogin = () => {
           </p>
         </form>
       </div>
-
-      <div>
-        <Link
-          to="/signup"
-          className='mb-5 bg-[#d5622d] flex items-center justify-center text-white rounded font-semibold px-4 py-2 w-full text-lg'
-        >
-          Create Captain Account
-        </Link>
-      </div>
     </div>
   );
 };
