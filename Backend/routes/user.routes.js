@@ -8,7 +8,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 // Route for user registration
 router.post('/register', [
     body('email').isEmail().withMessage('Invalid email'),
-    body('name.firstname').isLength({ min: 10 }).withMessage('Name must be at least 10 characters long'),
+    body('name.firstname').isLength({ min: 3 }).withMessage('Name must be at least 3 characters long'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 ], userController.register);
 

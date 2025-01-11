@@ -7,12 +7,12 @@ const userSchema = new mongoose.Schema({
         firstname: {
             type: String,
             required: true,
-            minlength: [10, 'Name must be at Least 10 Characters Long!'],
+            minlength: [3, 'First name must be at least 3 characters long'], // Change 10 to 3
         },
         lastname: {
             type: String,
             required: true,
-            minlength: [10, 'Name must be at Least 10 Characters Long!'],
+            minlength: [3, 'Last name must be at least 3 characters long'], // Change 10 to 3
         }
     },
     email: {
@@ -30,10 +30,10 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
 }, {
-    timestamps: true // Adds createdAt and updatedAt fields
+    timestamps: true
 });
 
-// Pre-save middleware to hash password before saving
+
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
@@ -74,6 +74,7 @@ userSchema.statics.hashPassword = async function (password) {
     return await bcrypt.hash(password, 10);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
 
 module.exports = User;
