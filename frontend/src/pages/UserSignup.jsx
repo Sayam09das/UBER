@@ -9,10 +9,12 @@ const UserSignup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    
+
     const userData = {
-      firstName,
-      lastName,
+      name: {
+        firstName: firstName,
+        lastName: lastName,
+      },
       email,
       password,
     };

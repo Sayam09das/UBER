@@ -11,8 +11,10 @@ const CaptainSignup = () => {
     e.preventDefault();
 
     const captainData = {
-      firstName,
-      lastName,
+      name: {
+        firstName: firstName,
+        lastName: lastName,
+      },
       email,
       password,
     };
@@ -35,10 +37,10 @@ const CaptainSignup = () => {
           alt="Uber Logo"
         />
         <form onSubmit={submitHandler} className='p-7'>
-          <h3 className='text-base font-medium mb-2'>What's Your Name</h3>
+          <h3 className='text-base font-medium mb-2'>What's Our Captain's Name</h3>
           <div className='flex gap-7 mb-5'>
             <input
-              className='bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-base placeholder:text'
+              className='bg-[#eeeeee] w-full rounded px-4 py-2 border text-base placeholder:text'
               type="text"
               placeholder='First name'
               required
@@ -97,7 +99,6 @@ const CaptainSignup = () => {
           apply.
         </p>
       </div>
-
     </div>
   );
 };
