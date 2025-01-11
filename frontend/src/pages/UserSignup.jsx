@@ -17,7 +17,7 @@ const UserSignup = () => {
     e.preventDefault();
 
     const newUser = {
-      name: {  // Wrap firstname and lastname inside name object
+      name: {
         firstname: firstName,    
         lastname: lastName
       },
@@ -34,6 +34,7 @@ const UserSignup = () => {
       if (response.status === 201) {
         const data = response.data;
         setUser(data.user);
+        localStorage.setItem('token', data.token)
         navigate('/home');
       } else {
         setErrorMessage('Registration failed. Please try again.');
