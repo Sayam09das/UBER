@@ -1,11 +1,11 @@
 import React from 'react'
 
-const LookingForDriver = (setVehiclePanel) => {
+const LookingForDriver = (props) => {
     return (
         <div>
             <h5
                 className="p-1 text-center absolute top-0 w-[93%] cursor-pointer"
-                onClick={() => setVehiclePanel( false )}
+                onClick={() => props.setVehicleFound( false )}
             >
                 <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
             </h5>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-const WaitingForDriver = ({ setVehiclePanel }) => {
+const WaitingForDriver = (props) => {
     return (
         <div>
             <h5
                 className="p-1 text-center absolute top-0 w-[93%] cursor-pointer"
-                onClick={() => setVehiclePanel(false)}
+                onClick={() => props.WaitingForDriver(false)}
             >
                 <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
             </h5>

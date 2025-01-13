@@ -167,7 +167,7 @@ const Home = () => {
           </form>
         </div>
         <div ref={panelRef} className="bg-white h-0">
-          <LocationSearchPanel setVehiclePanel={setVehiclePanel} />
+          <LocationSearchPanel setVehiclePanel={setVehiclePanel} setPanelOpen={setPanelOpen} />
         </div>
       </div>
       <div
@@ -181,23 +181,19 @@ const Home = () => {
         ref={confirmRidePanelRef}
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-14"
       >
-        <ConfirmRide
-          setVehiclePanel={setVehiclePanel}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setLookingForDriver={setVehicleFound}
-        />
+        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound} />
 
       </div>
 
       <div
         ref={vehicleFoundRef}
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-14">
-        <LookingForDriver setLookingForDriver={setVehicleFound} />
+        <LookingForDriver setVehicleFound={setVehicleFound} />
       </div>
 
       <div
         ref={waitingForDriverRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-14">
+        className="fixed w-full z-10 bottom-0  bg-white px-3 py-6 pt-14">
         <WaitingForDriver waitingForDriver={waitingForDriver} />
       </div>
     </div>

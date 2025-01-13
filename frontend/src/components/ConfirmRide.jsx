@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ConfirmRide = ({ setVehiclePanel, setConfirmRidePanel, setLookingForDriver }) => {
+const ConfirmRide = (props) => {
     return (
         <div>
             <h5
                 className="p-1 text-center absolute top-0 w-[93%] cursor-pointer"
-                onClick={() => setVehiclePanel(false)}
+                onClick={() => props.setVehiclePanel(false)}
             >
                 <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
             </h5>
@@ -41,8 +41,8 @@ const ConfirmRide = ({ setVehiclePanel, setConfirmRidePanel, setLookingForDriver
 
             <button
                 onClick={() => {
-                    setLookingForDriver(true);
-                    setConfirmRidePanel(false);
+                   props.setVehicleFound(true);
+                   props.setConfirmRidePanel(false);
                 }}
                 className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded'
             >
