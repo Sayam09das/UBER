@@ -1,6 +1,6 @@
 import React from 'react'
 
-const RidePopUp = (props) => {
+const ConfirmRidePopUp = (props) => {
     return (
         <div>
             <h5
@@ -9,13 +9,13 @@ const RidePopUp = (props) => {
             >
                 <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
             </h5>
-            <h3 className="text-2xl font-semibold mb-5">A New Ride !!</h3>
+            <h3 className="text-2xl font-semibold mb-5">Confirm this ride to this</h3>
             <div className='flex items-center justify-between mt-4 p-3 rounded-lg bg-yellow-400'>
                 <div className="flex items-center justify-between gap-3">
                     <img className='h-12 w-12 rounded-full object-cover' src="https://img.freepik.com/free-photo/handsome-young-man-with-arms-crossed-white-background_23-2148222620.jpg" />
-                        <h2 className='text-lg font-medium'>Harsh Patel</h2>
-                    </div>
-                    <h5 className='text-lg font-semibold'>2.2Km</h5>
+                    <h2 className='text-lg font-medium'>Harsh Patel</h2>
+                </div>
+                <h5 className='text-lg font-semibold'>2.2Km</h5>
             </div>
 
             <div className='flex gap-2 flex-col justify-between items-center'>
@@ -45,25 +45,27 @@ const RidePopUp = (props) => {
 
                 <button
                     onClick={() => {
-                        props.setConfirmRidePopupPanel(true);
+                        props.setVehicleFound(true);
+                        props.setConfirmRidePanel(false);
                     }}
                     className='w-full mt-4 bg-green-600 text-white font-semibold p-2 rounded'
                 >
-                    Accept
+                    Confirm
                 </button>
 
                 <button
                     onClick={() => {
+                        props.setConfirmRidePopupPanel(false);
                         props.setRidePopupPanel(false);
 
                     }}
-                    className='w-full mt-4  bg-red-600 text-white font-semibold p-2 rounded'
+                    className='w-full mt-4 bg-red-600 text-white font-semibold p-2 rounded'
                 >
-                    Cancel
+                    Ignore
                 </button>
             </div>
         </div>
     )
 }
 
-export default RidePopUp
+export default ConfirmRidePopUp

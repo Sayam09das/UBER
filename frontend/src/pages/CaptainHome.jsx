@@ -3,12 +3,15 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import CaptainDetails from '../components/CaptainDetails';
 import RidePopUp from '../components/RidePopUp';
+import ConfirmRidePopUp from '../components/ConfirmRidePopUp'; // Ensure this component is correctly imported
 import { useGSAP } from '@gsap/react';
 
 const CaptainHome = () => {
   const [ridePopupPanel, setRidePopupPanel] = useState(false);
-  const ridePopupPanelRef = useRef(null);
+  const [ConfirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false);
 
+  const ridePopupPanelRef = useRef(null);
+  const ConfirmRidePopupPanelRef = useRef(null);
 
   useGSAP(() => {
     if (ridePopupPanel) {
@@ -21,6 +24,14 @@ const CaptainHome = () => {
   const toggleRidePopup = () => {
     setRidePopupPanel((prev) => !prev);
   };
+
+  useGSAP(() => {
+    if (ConfirmRidePopupPanel) {
+      gsap.to(ConfirmRidePopupPanelRef.current, { y: 0, duration: 0.5, ease: 'power2.out' });
+    } else {
+      gsap.to(ConfirmRidePopupPanelRef.current, { y: '100%', duration: 0.5, ease: 'power2.in' });
+    }
+  }, [ConfirmRidePopupPanel]);
 
   return (
     <div className="h-screen">
@@ -51,10 +62,10 @@ const CaptainHome = () => {
       {/* Captain Info */}
       <div className="h-2/5 p-6">
         <div>
-          <div className="flex items-center justify-between">
+          <div className="w-full flex items-center justify-between mt-4 p-3 rounded-lg  bg-green-400">
             <div className="flex items-center justify-start gap-3">
               <img
-                className="h-10 w-10 rounded-full object-cover"
+                className="h-12 w-12 rounded-full object-cover"
                 src="https://img.freepik.com/free-photo/man-white_1368-3544.jpg"
                 alt="Captain Profile"
               />
@@ -67,7 +78,7 @@ const CaptainHome = () => {
           </div>
 
           {/* Stats */}
-          <div className="flex p-3 mb-8 bg-gray-100 rounded-full justify-center gap-5 items-start">
+          <div className="flex p-3 mt-4 mb-4 bg-gray-300 rounded-full justify-center gap-5 items-start">
             <div className="text-center">
               <i className="text-3xl mb-2 font-thin ri-timer-2-line"></i>
               <h5 className="text-lg font-medium">10.2</h5>
@@ -95,12 +106,16 @@ const CaptainHome = () => {
         </div>
       </div>
 
-      <div
-        ref={ridePopupPanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-14 shadow-lg rounded-t-3xl"
-      >
-        <RidePopUp setRidePopupPanel={setRidePopupPanel} />
+      {/* Ride PopUp */}
+      <div ref={ridePopupPanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-14 shadow-lg rounded-t-3xl">
+        <RidePopUp setRidePopupPanel={setRidePopupPanel} setConfirmRidePopupPanel={setConfirmRidePopupPanel}/>
       </div>
+
+      {/* Confirm Ride PopUp */}
+      <div ref={ConfirmRidePopupPanelRef} className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-14 shadow-lg rounded-t-3xl">
+        <ConfirmRidePopUp setConfirmRidePopupPanel={setConfirmRidePopupPanel} setRidePopupPanel={setRidePopupPanel}/>
+      </div>
+
     </div>
   );
 };
