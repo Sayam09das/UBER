@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const ConfirmRidePopUp = (props) => {
+    const [otp, setOtp] = useState('')
+    const submitHander = (e) =>{
+        e.preventDefault()
+    }
     return (
         <div>
             <h5
@@ -9,7 +14,7 @@ const ConfirmRidePopUp = (props) => {
             >
                 <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
             </h5>
-            <h3 className="text-2xl font-semibold mb-5">Confirm this ride to this</h3>
+            <h3 className="text-2xl font-semibold mb-5">Confirm this ride to Start</h3>
             <div className='flex items-center justify-between mt-4 p-3 rounded-lg bg-yellow-400'>
                 <div className="flex items-center justify-between gap-3">
                     <img className='h-12 w-12 rounded-full object-cover' src="https://img.freepik.com/free-photo/handsome-young-man-with-arms-crossed-white-background_23-2148222620.jpg" />
@@ -42,27 +47,29 @@ const ConfirmRidePopUp = (props) => {
                         </div>
                     </div>
                 </div>
+                <div className='mt-6 w-full'>
+                    <form onSubmit={()=>{
+                        submitHander(e)
+                    }}>
+                        <input value={otp} onChange={()=> setOtp(e.target.value)} type="text" className='bg-[#eee] px-6 py-4 font-mono text-lg rounded-lg w-full mt-3' placeholder='Enter OTP'/>
 
-                <button
-                    onClick={() => {
-                        props.setVehicleFound(true);
-                        props.setConfirmRidePanel(false);
-                    }}
-                    className='w-full mt-4 bg-green-600 text-white font-semibold p-2 rounded'
-                >
-                    Confirm
-                </button>
+                        
+                        <Link to='/captain-riding' className='w-full mt-5 flex justify-center bg-green-600 text-white font-semibold p-3 rounded-lg'>
+                            Confirm
+                        </Link>
 
-                <button
-                    onClick={() => {
-                        props.setConfirmRidePopupPanel(false);
-                        props.setRidePopupPanel(false);
+                        <button
+                            onClick={() => {
+                                props.setConfirmRidePopupPanel(false);
+                                props.setRidePopupPanel(false);
 
-                    }}
-                    className='w-full mt-4 bg-red-600 text-white font-semibold p-2 rounded'
-                >
-                    Ignore
-                </button>
+                            }}
+                            className='w-full mt-1 bg-red-600 text-white font-semibold p-3 rounded-lg'
+                        >
+                            Ignore
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     )
