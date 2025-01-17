@@ -60,10 +60,11 @@ module.exports.loginCaptain = async (req, res) => {
         const token = captain.generateAuthToken();
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Enable for production
+            secure: process.env.NODE_ENV === 'production', 
             sameSite: 'Strict',
             maxAge: 1000 * 60 * 60 * 24 // 1 day
         });
+        
 
         res.status(200).json({ token, captain });
     } catch (err) {
