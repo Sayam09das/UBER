@@ -14,19 +14,34 @@ module.exports.getCoordinates = async (req, res, next) => {
     }
 
     try {
-        if (!mapsService.getCoordinates) {
-            return res.status(500).json({ error: 'getCoordinates function not found in mapsService' });
-        }
-
         const coordinates = await mapsService.getCoordinates(address);
-        
+
         if (coordinates.error) {
             return res.status(404).json({ error: 'Coordinates not found', details: coordinates.error });
         }
-        
+
         res.status(200).json(coordinates);
     } catch (error) {
         console.error('Error fetching coordinates:', error.message);
         res.status(500).json({ error: 'Error fetching coordinates', details: error.message });
     }
 };
+
+
+module.exports.getDistanceTime = async (req, res, next) => {
+    const errors = validationResult(req);
+    try {
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { origin, destination } = req.query;
+
+        const distanceTime = await mapsService.getDistanceTime(origin, destination);
+        res.status(200).json(distanceTime);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({ error: 'Error fetching distance and time', details: err.message });
+    }
+    
+
+}
